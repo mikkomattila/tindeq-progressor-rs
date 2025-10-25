@@ -18,20 +18,20 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let manager = Manager::new().await?;
     let adapters = manager.adapters().await?;
     if adapters.is_empty() {
-        eprintln!("No Bluetooth adapters found");
+        eprintln!("No Bluetooth adapters found, exiting...");
         return Ok(());
     }
 
     for adapter in adapters.into_iter() {
-        println!("Starting scan on {}", adapter.adapter_info().await?);
+        println!("Starting scan on {}...", adapter.adapter_info().await?);
 
         adapter.start_scan(ScanFilter::default()).await?;
         time::sleep(SCAN_DURATION).await;
 
         let peripherals = adapter.peripherals().await?;
         if peripherals.is_empty() {
-            eprintln!("No bluetooth peripherals found");
-            continue;
+            eprintln!("No bluetooth peripherals found, exiting...");
+            return Ok(());
         }
 
         let mut progressor_found = false;
@@ -40,7 +40,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 if let Some(name) = properties.local_name {
                     if name.contains(progressor::NAME) {
                         if let Err(err) = progressor::handle(peripheral).await {
-                            eprintln!("Error handling progressor {}: {}", name, err);
+                            eprintln!("Error handling progressor {}: {}.", name, err);
                         }
                         progressor_found = true;
                         break;
@@ -50,7 +50,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         }
 
         if !progressor_found {
-            eprintln!("No Progressor found");
+            eprintln!("Progressor not found, exiting...");
         }
     }
     Ok(())
