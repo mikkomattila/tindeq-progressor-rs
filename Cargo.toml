@@ -4,8 +4,9 @@ version = "0.1.0"
 edition = "2024"
 authors = ["Mikko Mattila <9086012+mikkomattila@users.noreply.github.com>"]
 readme = "README.md"
+repository = "https://github.com/mikkomattila/tindeq-progressor-rs"
 publish = false
 
 [dependencies]
 btleplug = "0.11.8"
-tokio = { version = "1.44.2", features = ["macros", "rt", "rt-multi-thread"] }
+tokio = { version = "1.48", features = ["macros", "rt-multi-thread"] }
