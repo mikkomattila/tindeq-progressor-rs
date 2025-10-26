@@ -34,7 +34,7 @@ pub async fn run() -> Result<(), Box<dyn Error>> {
  * * `Ok(None)` - If no Bluetooth adapters are found.
  * * `Err` - If an error occurs while retrieving adapters.
  */
-pub async fn get_adapter() -> Result<Option<Adapter>, Box<dyn Error>> {
+async fn get_adapter() -> Result<Option<Adapter>, Box<dyn Error>> {
     let manager = Manager::new().await?;
     let adapters = manager.adapters().await?;
     let adapter = adapters.into_iter().next();
