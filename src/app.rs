@@ -12,13 +12,13 @@ use crate::progressor;
  */
 pub async fn run() -> Result<(), Box<dyn Error>> {
     if let Some(adapter) = get_adapter().await? {
-        if let Some(progressor_peripheral) = progressor::find(&adapter).await? {
-            if let Err(err) = progressor::connect(&progressor_peripheral).await {
+        if let Some(progressor) = progressor::find(&adapter).await? {
+            if let Err(err) = progressor.connect().await {
                 eprintln!("Error establishing connection: {}.", err);
             } else {
                 println!("Connection established. Press Ctrl+C to disconnect and exit.");
                 tokio::signal::ctrl_c().await?;
-                progressor_peripheral.disconnect().await?;
+                progressor.disconnect().await?;
             }
         } else {
             eprintln!("Tindeq Progressor not found.");
