@@ -1,15 +1,15 @@
-use btleplug::api::{Central, Manager as _, Peripheral as _};
+use btleplug::api::{Central, Manager as _};
 use btleplug::platform::{Adapter, Manager};
 use std::error::Error;
 
 use crate::progressor;
 
 /**
- * Runs the main application logic to find and connect to a Tindeq Progressor device.
- * # Returns
- * * * `Ok(())` - If the application runs successfully.
- * * `Err` - If an error occurs during execution.
- */
+Runs the main application logic to find and connect to a Tindeq Progressor device.
+# Returns
+ * `Ok(())` - If the application runs successfully.
+ * `Err` - If an error occurs during execution.
+*/
 pub async fn run() -> Result<(), Box<dyn Error>> {
     if let Some(adapter) = get_adapter().await? {
         if let Some(progressor) = progressor::find(&adapter).await? {
@@ -28,12 +28,12 @@ pub async fn run() -> Result<(), Box<dyn Error>> {
 }
 
 /**
- * Retrieves the first available Bluetooth adapter.
- * # Returns
- * * * `Ok(Some(Adapter))` - If a Bluetooth adapter is found.
- * * `Ok(None)` - If no Bluetooth adapters are found.
- * * `Err` - If an error occurs while retrieving adapters.
- */
+Retrieves the first available Bluetooth adapter.
+# Returns
+ * `Ok(Some(Adapter))` - If a Bluetooth adapter is found.
+ * `Ok(None)` - If no Bluetooth adapters are found.
+ * `Err` - If an error occurs while retrieving adapters.
+*/
 async fn get_adapter() -> Result<Option<Adapter>, Box<dyn Error>> {
     let manager = Manager::new().await?;
     let adapters = manager.adapters().await?;

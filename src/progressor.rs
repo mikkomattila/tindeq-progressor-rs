@@ -10,18 +10,20 @@ const NAME: &str = "Progressor";
 // pub const DATA_UUID: &str = "7e4e1702-1ea6-40c9-9dcc-13d34ffead57";
 // pub const CONTROL_POINT_UUID: &str = "7e4e1703-1ea6-40c9-9dcc-13d34ffead57";
 
-/// Represents a Tindeq Progressor device.
+/**
+ Represents a Tindeq Progressor device.
+*/
 pub struct Progressor {
     peripheral: Peripheral,
 }
 
 impl Progressor {
     /**
-     * Handles connection and interaction with a Tindeq Progressor device.
-     * # Returns
-     * * * `Ok(())` - If the connection and interaction are successful.
-     * * `Err` - If an error occurs during connection or interaction.
-     */
+    Handles connection and interaction with a Tindeq Progressor device.
+    # Returns
+     * `Ok(())` - If the connection and interaction are successful.
+     * `Err` - If an error occurs during connection or interaction.
+    */
     pub async fn connect(&self) -> Result<(), Box<dyn Error>> {
         let properties = self
             .peripheral
@@ -47,11 +49,11 @@ impl Progressor {
     }
 
     /**
-     * Disconnects from the Tindeq Progressor device.
-     * # Returns
-     * * * `Ok(())` - If the disconnection is successful.
-     * * `Err` - If an error occurs during disconnection.
-     */
+    Disconnects from the Tindeq Progressor device.
+    # Returns
+     * `Ok(())` - If the disconnection is successful.
+     * `Err` - If an error occurs during disconnection.
+    */
     pub async fn disconnect(&self) -> Result<(), Box<dyn Error>> {
         self.peripheral.disconnect().await?;
         Ok(())
@@ -59,14 +61,14 @@ impl Progressor {
 }
 
 /**
- * Scans for a Tindeq Progressor device using the provided Bluetooth adapter.
- * # Arguments
- * * `adapter` - A reference to the Bluetooth adapter to use for scanning.
- * # Returns
- * * `Ok(Some(Progressor))` - If a Tindeq Progressor device is found.
- * * `Ok(None)` - If no Tindeq Progressor device is found.
- * * `Err` - If an error occurs during scanning.
- */
+Scans for a Tindeq Progressor device using the provided Bluetooth adapter.
+# Arguments
+`adapter` - A reference to the Bluetooth adapter to use for scanning.
+# Returns
+ * `Ok(Some(Progressor))` - If a Tindeq Progressor device is found.
+ * `Ok(None)` - If no Tindeq Progressor device is found.
+ * `Err` - If an error occurs during scanning.
+*/
 pub async fn find(adapter: &Adapter) -> Result<Option<Progressor>, Box<dyn Error>> {
     println!(
         "Scanning for devices for {} seconds...",
