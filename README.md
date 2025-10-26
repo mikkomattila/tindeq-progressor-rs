@@ -6,7 +6,8 @@ TODO: Do something useful after the fact.
 
 ## Prerequisites
 
-Before you can build and run this project, you may need to install system dependencies required by the `btleplug` crate, depending on your operating system.
+- You need to have a Tindeq Progressor device and it must be turned on. One can be bought from [tindeq.com](https://tindeq.com/).
+- Before you can build and run this project, you may need to install system dependencies required by the `btleplug` crate, depending on your operating system.
 
 ## Usage
 
