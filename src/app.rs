@@ -11,26 +11,29 @@ Runs the main application logic to find and connect to a Tindeq Progressor devic
  * `Err` - If an error occurs during execution.
 */
 pub async fn run() -> Result<(), Box<dyn Error>> {
-    if let Some(adapter) = get_adapter().await? {
-        if let Some(progressor) = progressor::find(&adapter).await? {
-            let progressor_name = progressor.name().to_string();
-            if let Err(err) = progressor.connect().await {
-                eprintln!(
-                    "Error establishing connection to {}: {}.",
-                    progressor_name, err
-                );
-            } else {
-                println!(
-                    "Connection established to {}. Press Ctrl+C to disconnect and exit.",
-                    progressor_name
-                );
-                tokio::signal::ctrl_c().await?;
-                progressor.disconnect().await?;
-            }
-        } else {
-            eprintln!("Tindeq Progressor not found.");
-        }
+    let Some(adapter) = get_adapter().await? else {
+        return Err("No Bluetooth adapters found.".into());
+    };
+
+    let Some(progressor) = progressor::find(&adapter).await? else {
+        return Err("Tindeq Progressor not found.".into());
+    };
+
+    let progressor_name = progressor.name().to_string();
+    if let Err(err) = progressor.connect().await {
+        eprintln!(
+            "Error establishing connection to {}: {}.",
+            progressor_name, err
+        );
+    } else {
+        println!(
+            "Connection established to {}. Press Ctrl+C to disconnect and exit.",
+            progressor_name
+        );
+        tokio::signal::ctrl_c().await?;
+        progressor.disconnect().await?;
     }
+
     Ok(())
 }
 

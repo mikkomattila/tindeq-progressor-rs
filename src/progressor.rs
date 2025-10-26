@@ -87,5 +87,6 @@ pub async fn find(adapter: &Adapter) -> Result<Option<Progressor>, Box<dyn Error
         }
     }
 
+    println!("Tindeq Progressor not found.");
     Ok(None)
 }
