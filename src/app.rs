@@ -25,14 +25,15 @@ pub async fn run() -> Result<(), Box<dyn Error>> {
             "Error establishing connection to {}: {}.",
             progressor_name, err
         );
-    } else {
-        println!(
-            "Connection established to {}. Press Ctrl+C to disconnect and exit.",
-            progressor_name
-        );
-        tokio::signal::ctrl_c().await?;
-        progressor.disconnect().await?;
+        return Err("Error establishing connection to Tindeq Progressor.".into());
     }
+
+    println!(
+        "Connection established to {}. Press Ctrl+C to disconnect and exit.",
+        progressor_name
+    );
+    tokio::signal::ctrl_c().await?;
+    progressor.disconnect().await?;
 
     Ok(())
 }
