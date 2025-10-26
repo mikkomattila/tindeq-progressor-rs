@@ -21,7 +21,7 @@ const NAME: &str = "Progressor";
  */
 pub async fn find(adapter: &Adapter) -> Result<Option<Peripheral>, Box<dyn Error>> {
     println!(
-        "Scanning for Tindeq Progressor for {} seconds.",
+        "Scanning for devices for {} seconds...",
         SCAN_DURATION.as_secs()
     );
     adapter.start_scan(ScanFilter::default()).await?;
@@ -31,7 +31,6 @@ pub async fn find(adapter: &Adapter) -> Result<Option<Peripheral>, Box<dyn Error
         if let Some(properties) = peripheral.properties().await? {
             if let Some(name) = properties.local_name {
                 if name.contains(NAME) {
-                    println!("Found Tindeq Progressor: {}", name);
                     return Ok(Some(peripheral));
                 }
             }
@@ -59,7 +58,7 @@ pub async fn connect(progressor: &Peripheral) -> Result<(), Box<dyn Error>> {
         .local_name
         .ok_or("Progressor name was not found.")?;
 
-    println!("Connecting to {}.", &name);
+    println!("\nConnecting to {}.", &name);
     progressor.connect().await?;
 
     let is_connected = progressor.is_connected().await?;
