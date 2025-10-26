@@ -23,7 +23,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }
 
     for adapter in adapters.into_iter() {
-        println!("Starting scan on {}...", adapter.adapter_info().await?);
+        println!(
+            "Scanning for devices using {}.",
+            adapter.adapter_info().await?
+        );
 
         adapter.start_scan(ScanFilter::default()).await?;
         time::sleep(SCAN_DURATION).await;
@@ -39,8 +42,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
             if let Some(properties) = peripheral.properties().await? {
                 if let Some(name) = properties.local_name {
                     if name.contains(progressor::NAME) {
-                        if let Err(err) = progressor::handle(peripheral).await {
-                            eprintln!("Error handling progressor {}: {}.", name, err);
+                        if let Err(err) = progressor::connect(peripheral).await {
+                            eprintln!("Error connecting to {}: {}.", name, err);
+                        } else {
+                            println!(
+                                "Connection established. Press Ctrl+C to disconnect and exit."
+                            );
+
+                            tokio::signal::ctrl_c().await?;
+
+                            peripheral.disconnect().await?;
+                            println!("\nDisconnected, exiting...");
                         }
                         progressor_found = true;
                         break;
